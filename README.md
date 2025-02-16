@@ -11,4 +11,3 @@ The database is a local postgresSQL(online soon) for testing.
 *GET localhost:8080/api/basics/episodes?title={title}&page={}&size={}
 
 ## Example
-![img.png](img.png)
