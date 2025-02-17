@@ -1,6 +1,5 @@
-package com.imdbdb.imdbapi.basics;
+package com.imdbdb.imdbapi.entity;
 
-import com.imdbdb.imdbapi.episode.Episode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -46,4 +45,7 @@ public class Basics {
 
     @OneToMany(mappedBy = "parentTconst", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Episode> episodes;
+
+    @OneToOne(mappedBy = "basics", cascade = CascadeType.ALL)
+    private Rating rating;
 }

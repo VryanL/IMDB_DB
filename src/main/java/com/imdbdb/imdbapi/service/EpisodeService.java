@@ -1,5 +1,6 @@
-package com.imdbdb.imdbapi.episode;
+package com.imdbdb.imdbapi.service;
 
+import com.imdbdb.imdbapi.repository.EpisodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,7 @@
-package com.imdbdb.imdbapi.episode;
+package com.imdbdb.imdbapi.controller;
 
 
+import com.imdbdb.imdbapi.service.EpisodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

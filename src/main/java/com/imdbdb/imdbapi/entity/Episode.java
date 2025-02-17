@@ -1,6 +1,5 @@
-package com.imdbdb.imdbapi.episode;
+package com.imdbdb.imdbapi.entity;
 
-import com.imdbdb.imdbapi.basics.Basics;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

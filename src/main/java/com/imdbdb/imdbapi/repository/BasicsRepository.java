@@ -1,5 +1,6 @@
-package com.imdbdb.imdbapi.basics;
+package com.imdbdb.imdbapi.repository;
 
+import com.imdbdb.imdbapi.entity.Basics;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

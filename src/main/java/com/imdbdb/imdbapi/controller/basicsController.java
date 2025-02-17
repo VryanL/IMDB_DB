@@ -1,5 +1,7 @@
-package com.imdbdb.imdbapi.basics;
+package com.imdbdb.imdbapi.controller;
 
+import com.imdbdb.imdbapi.service.BasicsService;
+import com.imdbdb.imdbapi.dto.EpisodeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +14,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/basics")
-public class basicsContorller {
+public class basicsController {
 
     private final BasicsService basicsService;
 
     @Autowired
-    public basicsContorller(BasicsService basicsService) {
+    public basicsController(BasicsService basicsService) {
         this.basicsService = basicsService;
     }
 
