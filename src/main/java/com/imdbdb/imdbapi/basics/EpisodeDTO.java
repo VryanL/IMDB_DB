@@ -1,4 +1,5 @@
 package com.imdbdb.imdbapi.basics;
 
-public record EpisodeDTO(String tconst, String primary_title) {
+
+public record EpisodeDTO(String tconst, String primary_title, Integer season_number) {
 }

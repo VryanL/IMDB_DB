@@ -1,13 +1,13 @@
 package com.imdbdb.imdbapi.basics;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.imdbdb.imdbapi.episode.Episode;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -21,27 +21,29 @@ public class Basics {
     private String tconst;
 
     @Column(name = "title_type")
-    private String title_type;
+    private String titleType;
 
     @Column(name = "primary_title")
-    private String primary_title;
+    private String primaryTitle;
 
     @Column(name = "original_title")
-    private String original_title;
+    private String originalTitle;
 
     @Column(name = "is_adult")
-    private boolean is_adult;
+    private boolean isAdult;
 
     @Column(name = "start_year")
-    private Integer start_year;
+    private Integer startYear;
 
     @Column(name = "end_year")
-    private Integer end_year;
+    private Integer endYear;
 
     @Column(name = "runtime_minutes")
-    private Integer runtime_minute;
+    private Integer runtimeMinute;
 
     @Column(name = "genres")
     private String genres;
 
+    @OneToMany(mappedBy = "parentTconst", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Episode> episodes;
 }

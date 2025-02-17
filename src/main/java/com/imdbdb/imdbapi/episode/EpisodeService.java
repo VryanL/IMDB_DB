@@ -13,7 +13,4 @@ public class EpisodeService {
     }
 
 
-    public Episode getEpisodes(String tconst) {
-        return episodeRepository.findById(tconst).orElse(null);
-    }
 }

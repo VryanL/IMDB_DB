@@ -1,11 +1,12 @@
 package com.imdbdb.imdbapi.basics;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
 @RestController
@@ -21,13 +22,13 @@ public class basicsContorller {
 
 
 
-    @GetMapping("/episodes")
-    public Page<EpisodeDTO> getEpisodesByTitle(
-            @RequestParam String title,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+    @GetMapping("/series/episodes")
+    public List<String> getEpisodesByTitle(
+            @RequestParam String title
+           // @RequestParam(defaultValue = "0") int page,
+            // @RequestParam(defaultValue = "10") int size
     ) {
-        return basicsService.getEpisodeByTitle(title, page, size);
+        return basicsService.getEpisodeTitles(title);
     }
 
 }

@@ -1,9 +1,7 @@
 package com.imdbdb.imdbapi.episode;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.imdbdb.imdbapi.basics.Basics;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,11 +18,15 @@ public class Episode {
     private String tconst;
 
     @Column(name = "parent_tconst")
-    private String parent_tconst;
+    private String parentTconst;
 
     @Column(name = "season_number")
-    private Integer season_number;
+    private Integer seasonNumber;
 
     @Column(name = "episode_number")
-    private Integer episode_number;
+    private Integer episodeNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_tconst", referencedColumnName = "tconst", insertable=false, updatable=false)
+    private Basics parentShow;
 }

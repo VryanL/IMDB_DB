@@ -1,10 +1,14 @@
 package com.imdbdb.imdbapi.basics;
 
+
+import com.imdbdb.imdbapi.episode.Episode;
+import com.imdbdb.imdbapi.episode.EpisodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 
 @Service
@@ -12,13 +16,36 @@ public class BasicsService {
 
     private final BasicsRepository basicsRepository;
 
+    private final EpisodeRepository episodeRepository;
+
     @Autowired
-    public BasicsService(BasicsRepository basicsRepository) {
+    public BasicsService(BasicsRepository basicsRepository, EpisodeRepository episodeRepository) {
         this.basicsRepository = basicsRepository;
+        this.episodeRepository = episodeRepository;
     }
 
-    public Page<EpisodeDTO> getEpisodeByTitle(String title, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return basicsRepository.findEpisodesByTitle(title, pageable);
+    public List<String> getEpisodeTitles(String primary_title) {
+        List<Basics> basicsList = basicsRepository.findByPrimaryTitleAndTitleType(primary_title, "tvSeries");
+
+        if (basicsList.isEmpty()) {
+            throw new RuntimeException("Show not found");
+        }
+
+        List<String> episodeTitles = new ArrayList<>();
+
+        for (Basics basics : basicsList) {
+            System.out.println(basics.getTconst());
+
+            String tconst = basics.getTconst();
+            List<Episode> episodes = episodeRepository.findByParentTconst(tconst);
+
+            for (Episode episode : episodes) {
+                basicsRepository.findById(episode.getTconst())
+                        .ifPresent(b -> episodeTitles.add(b.getPrimaryTitle()));
+            }
+
+        }
+        return episodeTitles;
     }
+
 }
