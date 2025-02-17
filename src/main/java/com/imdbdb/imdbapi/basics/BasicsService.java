@@ -24,24 +24,26 @@ public class BasicsService {
         this.episodeRepository = episodeRepository;
     }
 
-    public List<String> getEpisodeTitles(String primary_title) {
+    public List<EpisodeDTO> getEpisodeTitles(String primary_title) {
         List<Basics> basicsList = basicsRepository.findByPrimaryTitleAndTitleType(primary_title, "tvSeries");
 
         if (basicsList.isEmpty()) {
             throw new RuntimeException("Show not found");
         }
 
-        List<String> episodeTitles = new ArrayList<>();
+        List<EpisodeDTO> episodeTitles = new ArrayList<>();
 
         for (Basics basics : basicsList) {
             System.out.println(basics.getTconst());
 
             String tconst = basics.getTconst();
-            List<Episode> episodes = episodeRepository.findByParentTconst(tconst);
+            List<Episode> episodes = episodeRepository.findByParentTconstOrderBySeasonNumberAscEpisodeNumberAsc(tconst);
 
             for (Episode episode : episodes) {
                 basicsRepository.findById(episode.getTconst())
-                        .ifPresent(b -> episodeTitles.add(b.getPrimaryTitle()));
+                        .ifPresent(b -> episodeTitles.add(
+                                new EpisodeDTO(b.getPrimaryTitle(), episode.getSeasonNumber(), episode.getEpisodeNumber())
+                        ));
             }
 
         }

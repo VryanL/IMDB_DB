@@ -1,5 +1,18 @@
 package com.imdbdb.imdbapi.basics;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public record EpisodeDTO(String tconst, String primary_title, Integer season_number) {
+@Getter
+public class EpisodeDTO {
+    private final String primaryTitle;
+    private final Integer seasonNumber;
+    private final Integer episodeNumber;
+
+    public EpisodeDTO(String primaryTitle, Integer seasonNumber, Integer episodeNumber) {
+        this.primaryTitle = primaryTitle;
+        this.seasonNumber = seasonNumber;
+        this.episodeNumber = episodeNumber;
+    }
+
 }

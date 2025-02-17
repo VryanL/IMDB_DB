@@ -1,6 +1,7 @@
 package com.imdbdb.imdbapi.basics;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,12 +24,9 @@ public class basicsContorller {
 
 
     @GetMapping("/series/episodes")
-    public List<String> getEpisodesByTitle(
-            @RequestParam String title
-           // @RequestParam(defaultValue = "0") int page,
-            // @RequestParam(defaultValue = "10") int size
-    ) {
-        return basicsService.getEpisodeTitles(title);
+    public ResponseEntity<List<EpisodeDTO>> getEpisodesByTitle(@RequestParam String title) {
+        List<EpisodeDTO> episodes = basicsService.getEpisodeTitles(title);
+        return ResponseEntity.ok(episodes);
     }
 
 }
