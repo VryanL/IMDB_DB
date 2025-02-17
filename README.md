@@ -1,4 +1,4 @@
-# IMDb_Data_API (beta)
+# IMDb_Data_API (prototype)
 
 This is a work in progress IMDb data API, 
 at the moment /api/basics/series/episodes?title={title} returns 10(default) episodes of {title}.
