@@ -11,5 +11,6 @@ The database is a local postgresSQL(online soon) for testing.
 *GET localhost:8080/api/basics/series/episodes?title={title}
 
 ## Example
-![image](https://github.com/user-attachments/assets/c3377423-719e-44d8-8145-e79439adf069)
+![image](https://github.com/user-attachments/assets/d07f15d7-574c-4ffb-a10b-31361e5eb1cd)
+
 
