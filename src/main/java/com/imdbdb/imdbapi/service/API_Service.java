@@ -19,14 +19,14 @@ import java.util.List;
 
 
 @Service
-public class BasicsService {
+public class API_Service {
 
     private final BasicsRepository basicsRepository;
     private final EpisodeRepository episodeRepository;
     private final RatingRepository ratingRepository;
 
     @Autowired
-    public BasicsService(BasicsRepository basicsRepository, EpisodeRepository episodeRepository, RatingRepository ratingRepository) {
+    public API_Service(BasicsRepository basicsRepository, EpisodeRepository episodeRepository, RatingRepository ratingRepository) {
         this.basicsRepository = basicsRepository;
         this.episodeRepository = episodeRepository;
         this.ratingRepository = ratingRepository;
@@ -54,26 +54,20 @@ public class BasicsService {
 
 
     public List<EpisodeDTO> getEpisodeTitles(String tconst) {
-        Basics basics = basicsRepository.findById(tconst).orElseThrow(
-                ()->new ResourceNotFoundException("Id " + tconst + " not found"));
 
         List<EpisodeDTO> episodeTitles = new ArrayList<>();
         List<Episode> episodes = episodeRepository.findByParentTconstOrderBySeasonNumberAscEpisodeNumberAsc(tconst);
+        if (episodes.isEmpty()) {
+            throw new ResourceNotFoundException(tconst + " not found");
+        }
 
         for (Episode episode : episodes) {
             String episode_tconst = episode.getTconst();
-            Rating rating = ratingRepository.findByTconst(episode_tconst).orElse(null);
+            Rating rating = ratingRepository.findById(episode_tconst).orElseThrow(
+                    ()->new ResourceNotFoundException("Id: " + tconst + " not found in ratings"));
 
             basicsRepository.findById(episode_tconst)
-                    .ifPresent(b -> {
-                        assert rating != null;
-                        episodeTitles.add(new EpisodeDTO(
-                                b.getPrimaryTitle(),
-                                episode.getSeasonNumber(),
-                                episode.getEpisodeNumber(),
-                                rating.getAverageRating())
-                        );
-                    });
+                    .ifPresent(b -> episodeTitles.add(new EpisodeDTO(b, episode, rating)));
         }
         return episodeTitles;
     }

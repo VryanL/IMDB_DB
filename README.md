@@ -8,6 +8,7 @@
 ## Usage
 * GET api/{title}
 * GET api/{title}/episodes
+* GET api/search?title={title}
 
 
 ## Examples

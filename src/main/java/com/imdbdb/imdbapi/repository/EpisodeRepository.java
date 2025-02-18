@@ -9,7 +9,6 @@ import java.util.List;
 
 @Repository
 public interface EpisodeRepository extends JpaRepository<Episode, String> {
-    List<Episode> findByParentTconst(String parentTconst);
 
     List<Episode> findByParentTconstOrderBySeasonNumberAscEpisodeNumberAsc(String parentTconst);
 
