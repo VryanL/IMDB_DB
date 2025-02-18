@@ -2,6 +2,7 @@ package com.imdbdb.imdbapi.service;
 
 
 import com.imdbdb.imdbapi.dto.EpisodeDTO;
+import com.imdbdb.imdbapi.dto.TitlesDTO;
 import com.imdbdb.imdbapi.entity.Basics;
 import com.imdbdb.imdbapi.entity.Episode;
 import com.imdbdb.imdbapi.entity.Rating;
@@ -21,9 +22,7 @@ import java.util.List;
 public class BasicsService {
 
     private final BasicsRepository basicsRepository;
-
     private final EpisodeRepository episodeRepository;
-
     private final RatingRepository ratingRepository;
 
     @Autowired
@@ -33,36 +32,48 @@ public class BasicsService {
         this.ratingRepository = ratingRepository;
     }
 
-    public List<EpisodeDTO> getEpisodeTitles(String primary_title) {
-        List<Basics> basicsList = basicsRepository.findByPrimaryTitleAndTitleType(primary_title, "tvSeries");
+    public TitlesDTO getTitlesById(String tconst) {
+        Basics basics = basicsRepository.findById(tconst).orElseThrow(
+                ()-> new ResourceNotFoundException("Basics not found"));
+        return new TitlesDTO(basics);
+    }
 
+    public List<TitlesDTO> getTitles(String title) {
+        List<Basics> basicsList = basicsRepository.findByPrimaryTitleIgnoreCase(title);
         if (basicsList.isEmpty()) {
-            throw new ResourceNotFoundException(primary_title + " not found");
+            throw new ResourceNotFoundException(title + " not found");
         }
 
-        List<EpisodeDTO> episodeTitles = new ArrayList<>();
-
+        List<TitlesDTO> basicsDTOList = new ArrayList<>();
         for (Basics basics : basicsList) {
-            String tconst = basics.getTconst();
-            List<Episode> episodes = episodeRepository.findByParentTconstOrderBySeasonNumberAscEpisodeNumberAsc(tconst);
+            basicsDTOList.add(new TitlesDTO(basics));
+        }
+        return basicsDTOList;
+    }
 
 
-            for (Episode episode : episodes) {
-                String episode_tconst = episode.getTconst();
 
-                Rating rating = ratingRepository.findByTconst(episode_tconst).orElse(null);
-                basicsRepository.findById(episode_tconst)
-                        .ifPresent(b -> {
-                            assert rating != null;
-                            episodeTitles.add(new EpisodeDTO(
-                                    b.getPrimaryTitle(),
-                                    episode.getSeasonNumber(),
-                                    episode.getEpisodeNumber(),
-                                    rating.getAverageRating())
-                            );
-                        });
-            }
+    public List<EpisodeDTO> getEpisodeTitles(String tconst) {
+        Basics basics = basicsRepository.findById(tconst).orElseThrow(
+                ()->new ResourceNotFoundException("Id " + tconst + " not found"));
 
+        List<EpisodeDTO> episodeTitles = new ArrayList<>();
+        List<Episode> episodes = episodeRepository.findByParentTconstOrderBySeasonNumberAscEpisodeNumberAsc(tconst);
+
+        for (Episode episode : episodes) {
+            String episode_tconst = episode.getTconst();
+            Rating rating = ratingRepository.findByTconst(episode_tconst).orElse(null);
+
+            basicsRepository.findById(episode_tconst)
+                    .ifPresent(b -> {
+                        assert rating != null;
+                        episodeTitles.add(new EpisodeDTO(
+                                b.getPrimaryTitle(),
+                                episode.getSeasonNumber(),
+                                episode.getEpisodeNumber(),
+                                rating.getAverageRating())
+                        );
+                    });
         }
         return episodeTitles;
     }

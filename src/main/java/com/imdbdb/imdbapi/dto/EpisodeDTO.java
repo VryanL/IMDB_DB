@@ -9,16 +9,11 @@ public class EpisodeDTO {
     private final Integer episodeNumber;
     private final Double rating;
 
-//    public EpisodeDTO(String primaryTitle, Integer seasonNumber, Integer episodeNumber) {
-//        this.primaryTitle = primaryTitle;
-//        this.seasonNumber = seasonNumber;
-//        this.episodeNumber = episodeNumber;
-//    }
 
     public EpisodeDTO(String primaryTitle, Integer seasonNumber, Integer episodeNumber, Double episodeRating) {
         this.primaryTitle = primaryTitle;
         this.seasonNumber = seasonNumber;
         this.episodeNumber = episodeNumber;
-        this.rating = episodeRating;
+        this.rating = Math.round(episodeRating * 10.0) /10.0;
     }
 }
