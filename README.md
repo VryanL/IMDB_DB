@@ -11,8 +11,4 @@
 * GET api/search?title={title}
 
 
-## Examples
-![image](https://github.com/user-attachments/assets/251ac2fc-41bc-41cf-bda5-49ada34479aa)
-
-![image](https://github.com/user-attachments/assets/aa2ccb34-4f8b-4703-ab77-0a33a94dacb0)
 

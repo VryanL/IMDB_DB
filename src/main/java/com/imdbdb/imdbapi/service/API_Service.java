@@ -11,6 +11,7 @@ import com.imdbdb.imdbapi.repository.EpisodeRepository;
 import com.imdbdb.imdbapi.repository.BasicsRepository;
 import com.imdbdb.imdbapi.repository.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,18 +36,20 @@ public class API_Service {
     public TitlesDTO getTitlesById(String tconst) {
         Basics basics = basicsRepository.findById(tconst).orElseThrow(
                 ()-> new ResourceNotFoundException("Basics not found"));
-        return new TitlesDTO(basics);
+        Rating rating = ratingRepository.findById(tconst).orElse(new Rating());
+        return new TitlesDTO(basics,rating);
     }
 
     public List<TitlesDTO> getTitles(String title) {
-        List<Basics> basicsList = basicsRepository.findByPrimaryTitleIgnoreCase(title);
+        List<Basics> basicsList = basicsRepository.findByPrimaryTitleIgnoreCaseOrderByStartYearDesc(title);
         if (basicsList.isEmpty()) {
             throw new ResourceNotFoundException(title + " not found");
         }
 
         List<TitlesDTO> basicsDTOList = new ArrayList<>();
         for (Basics basics : basicsList) {
-            basicsDTOList.add(new TitlesDTO(basics));
+            Rating rating = ratingRepository.findById(basics.getTconst()).orElse(new Rating());
+            basicsDTOList.add(new TitlesDTO(basics, rating));
         }
         return basicsDTOList;
     }
@@ -63,8 +66,7 @@ public class API_Service {
 
         for (Episode episode : episodes) {
             String episode_tconst = episode.getTconst();
-            Rating rating = ratingRepository.findById(episode_tconst).orElseThrow(
-                    ()->new ResourceNotFoundException("Id: " + tconst + " not found in ratings"));
+            Rating rating = ratingRepository.findById(episode_tconst).orElse(new Rating());
 
             basicsRepository.findById(episode_tconst)
                     .ifPresent(b -> episodeTitles.add(new EpisodeDTO(b, episode, rating)));

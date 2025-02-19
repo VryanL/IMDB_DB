@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 public class EpisodeDTO {
-    private final String tconst;
+    private final String id;
     private final String primaryTitle;
     private final Integer seasonNumber;
     private final Integer episodeNumber;
@@ -15,7 +15,7 @@ public class EpisodeDTO {
 
 
     public EpisodeDTO(Basics basics, Episode episode, Rating rating) {
-        this.tconst = basics.getTconst();
+        this.id = basics.getTconst();
         this.primaryTitle = basics.getPrimaryTitle();
         this.seasonNumber = episode.getSeasonNumber();
         this.episodeNumber = episode.getEpisodeNumber();

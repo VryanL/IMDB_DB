@@ -1,6 +1,7 @@
 package com.imdbdb.imdbapi.repository;
 
 import com.imdbdb.imdbapi.entity.Basics;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface BasicsRepository extends JpaRepository<Basics, String> {
-    List<Basics> findByPrimaryTitleIgnoreCase(String primaryTitle);
+    List<Basics> findByPrimaryTitleIgnoreCase(String primaryTitle, Sort sort);
 
+    List<Basics> findByPrimaryTitleIgnoreCaseOrderByStartYearDesc(String primaryTitle);
 }
