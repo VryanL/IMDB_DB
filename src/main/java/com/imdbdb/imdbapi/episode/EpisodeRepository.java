@@ -1,7 +1,7 @@
-package com.imdbdb.imdbapi.repository;
+package com.imdbdb.imdbapi.episode;
 
 
-import com.imdbdb.imdbapi.entity.Episode;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface EpisodeRepository extends JpaRepository<Episode, String> {
 
+    @EntityGraph(attributePaths = {"basics"})
     List<Episode> findByParentTconstOrderBySeasonNumberAscEpisodeNumberAsc(String parentTconst);
 
 }

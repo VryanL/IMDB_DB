@@ -1,5 +1,7 @@
-package com.imdbdb.imdbapi.entity;
+package com.imdbdb.imdbapi.rating;
 
+import com.imdbdb.imdbapi.basics.Basics;
+import com.imdbdb.imdbapi.episode.Episode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,12 +19,14 @@ public class Rating {
     private String tconst;
 
     @Column(name = "average_rating")
-    private double averageRating;
+    private Double averageRating;
 
     @Column(name = "num_votes")
     private Integer numVotes;
 
-    @OneToOne
-    @JoinColumn(name = "tconst", referencedColumnName = "tconst")
+    @OneToOne(mappedBy = "ratings")
     private Basics basics;
+
+    @OneToOne(mappedBy = "rating")
+    private Episode episode;
 }

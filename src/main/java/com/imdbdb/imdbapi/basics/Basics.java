@@ -1,12 +1,16 @@
-package com.imdbdb.imdbapi.entity;
+package com.imdbdb.imdbapi.basics;
 
+import com.imdbdb.imdbapi.episode.Episode;
+import com.imdbdb.imdbapi.rating.Rating;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
+
 
 @Entity
 @Getter @Setter
@@ -38,14 +42,16 @@ public class Basics {
     private Integer endYear;
 
     @Column(name = "runtime_minutes")
-    private Integer runtimeMinute;
+    private Integer runtimeMinutes;
 
     @Column(name = "genres")
     private String genres;
 
-    @OneToMany(mappedBy = "parentTconst", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Episode> episodes;
+    @OneToMany(mappedBy = "parentBasics", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Episode> episodes = new ArrayList<>();
 
-    @OneToOne(mappedBy = "basics", cascade = CascadeType.ALL)
-    private Rating rating;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name ="tconst", referencedColumnName = "tconst")
+    private Rating ratings;
+
 }

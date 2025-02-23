@@ -1,5 +1,7 @@
-package com.imdbdb.imdbapi.entity;
+package com.imdbdb.imdbapi.episode;
 
+import com.imdbdb.imdbapi.basics.Basics;
+import com.imdbdb.imdbapi.rating.Rating;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Episode {
     @Id
-    @Column(name = "tconst", unique = true, nullable = false)
+    @Column(name = "tconst")
     private String tconst;
 
     @Column(name = "parent_tconst")
@@ -25,7 +27,16 @@ public class Episode {
     @Column(name = "episode_number")
     private Integer episodeNumber;
 
+    @OneToOne
+    @JoinColumn(name = "tconst", referencedColumnName = "tconst")
+    private Basics basics;
+
     @ManyToOne
     @JoinColumn(name = "parent_tconst", referencedColumnName = "tconst", insertable=false, updatable=false)
-    private Basics parentShow;
+    private Basics parentBasics;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "tconst", referencedColumnName = "tconst")
+    private Rating rating;
+
 }
